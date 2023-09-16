@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap");
 
+@import url("https://fonts.googleapis.com/css2?family=Qwitcher+Grypen&display=swap");
+
 :root {
   --dark-clr: #1a1a1a;
   --light-clr: #f5f5f5;
@@ -28,34 +30,63 @@ video {
 
 body {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
+  /* display: grid;
+  place-items: center; */
   padding: 1rem;
   background: var(--dark-clr);
   font-family: "Oswald", sans-serif;
   line-height: 1.5;
   text-align: center;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .title {
   font-size: calc(5rem + 0.390625vw);
   font-weight: bold;
   color: var(--light-clr);
-  margin-bottom: 3rem;
+}
+
+.sub-title {
+  font-family: "Qwitcher Grypen", cursive;
+  font-size: calc(6rem + 0.390625vw);
+  color: var(--light-clr);
 }
 
 .info {
-  font-size: calc(3rem + 0.390625vw);
+  font-size: calc(1.5rem + 0.390625vw);
   font-weight: bold;
   color: var(--light-clr);
-  margin-bottom: 3rem;
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+}
+
+.info p:not(:last-child) {
+  margin-bottom: 2rem;
+}
+
+.info a {
+  color: inherit;
+}
+
+.form-container {
+  max-width: 30rem;
+  margin: 0 auto;
+  border: 1px solid var(--light-clr);
+  padding: 1.5rem;
+}
+
+.form-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--light-clr);
+  margin-bottom: 2rem;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  width: 20rem;
+  font-weight: bold;
+  width: 100%;
 }
 
 form > *:not(label) {
