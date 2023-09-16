@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
+    />
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.js"
+    ></script>
+  </head>
+  <body x-data="data()">
+    <template x-if="user && token">
+      <header
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid var(--primary);
+          padding-inline: 1rem;
+          padding-block: 0.5rem;
+        "
+      >
+        <span x-text="'Ahoj, ' + user"></span>
+        <button
+          @click="logout"
+          class="contrast"
+          style="
+            width: auto;
+            padding: 0.3rem;
+            font-size: 0.8rem;
+            margin-bottom: 0;
+          "
+        >
+          Logout
+        </button>
+      </header>
+    </template>
+    <main class="container">
+      <template x-if="!user">
+        <div>
+          <h1>Login</h1>
+          <form @submit.prevent="login">
+            <input
+              type="text"
+              autocomplete="off"
+              placeholder="Username"
+              x-model="loginData.username"
+              required
+            />
+            <input
+              type="password"
+              autocomplete="off"
+              placeholder="Password"
+              x-model="loginData.password"
+              required
+            />
+            <button type="submit" class="contrast">Login</button>
+          </form>
+        </div>
+      </template>
+
+      <template x-if="user">
+        <div>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 2rem;
+            "
+          >
+            <h1 style="margin-bottom: 0">Guestlist</h1>
+            <button
+              @click="exportXLS"
+              class="contrast outline"
+              style="width: auto; margin-bottom: 0"
+            >
+              Export excel
+            </button>
+          </div>
+
+          <template x-if="isLoading">
+            <p aria-busy="true">Loading…</p>
+          </template>
+
+          <template x-if="!isLoading && records === null">
+            <p>No guests😥</p>
+          </template>
+
+          <template x-init="fetchData" x-if="records !== null">
+            <figure>
+              <table id="table" role="grid">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Meno</th>
+                    <th scope="col">Odpoveď</th>
+                    <th scope="col">Počet hostí</th>
+                    <th scope="col">Mená hostí</th>
+                    <th scope="col">Komentár</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="(record, index) in records" :key="index">
+                    <tr>
+                      <td x-text="index+1"></td>
+                      <td x-text="record.name.toLowerCase()"></td>
+                      <td x-text="record.answer.toLowerCase()"></td>
+                      <td
+                        x-text="record.count ? record.count.toLowerCase() : 'n/a'"
+                      ></td>
+                      <td
+                        x-text="record.guests ? record.guests.toLowerCase() : 'n/a'"
+                      ></td>
+                      <td
+                        x-text="record.comment ? record.comment.toLowerCase() : 'n/a'"
+                      ></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </figure>
+          </template>
+        </div>
+      </template>
+    </main>
+    <script>
+      function data() {
+        return {
+          user: localStorage.getItem("username"),
+          token: localStorage.getItem("token"),
+          records: null,
+          isLoading: false,
+          loginData: {
+            username: "",
+            password: "",
+          },
+          resetForm() {
+            (this.loginData.username = ""), (this.loginData.password = "");
+          },
+          async fetchData() {
+            this.isLoading = true;
+            try {
+              fetch(`https://wedd-rsvp.fly.dev/api/collections/rsvp/records`, {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: this.token,
+                },
+              })
+                .then((res) => {
+                  if (!res.ok) {
+                    Swal.fire("😧...chyba, refresh?");
+                    this.isLoading = false;
+                    this.resetForm();
+                    throw new Error(res.status);
+                  }
+                  return res.json();
+                })
+                .then((data) => {
+                  this.records = data.items;
+                  this.isLoading = false;
+                });
+            } catch (error) {
+              console.log(error);
+            }
+          },
+          exportXLS() {
+            const table = document.getElementById("table");
+            const workbook = XLSX.utils.table_to_book(table, {
+              sheet: "table",
+            });
+            XLSX.writeFile(workbook, "rsvp.xls");
+          },
+          async login() {
+            try {
+              fetch(
+                `https://wedd-rsvp.fly.dev/api/collections/users/auth-with-password`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    identity: this.loginData.username,
+                    password: this.loginData.password,
+                  }),
+                }
+              )
+                .then((res) => {
+                  if (!res.ok) {
+                    Swal.fire("Not authorized!");
+                    throw new Error(res.status);
+                  }
+                  return res.json();
+                })
+                .then((data) => {
+                  localStorage.setItem("token", data.token);
+                  this.token = data.token;
+                  localStorage.setItem("username", data.record.username);
+                  this.user = data.record.username;
+                });
+            } catch (error) {
+              console.log(error);
+            }
+          },
+          logout() {
+            localStorage.removeItem("token");
+            this.token = "";
+            localStorage.removeItem("username");
+            this.user = "";
+          },
+        };
+      }
+    </script>
+  </body>
+</html>

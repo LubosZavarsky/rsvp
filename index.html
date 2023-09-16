@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="sk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rsvp</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.0/cdn.js"
+    ></script>
+  </head>
+  <body>
+    <h1 class="title">WEDDING L+L</h1>
+    <h2 class="info">21.10.2023 | Konská železnica BA | 13:00</h2>
+
+    <form x-data="rsvpForm()" @submit.prevent="submitForm">
+      <label for="no autocomplete">Meno</label>
+      <input
+        id="no autocomplete"
+        type="text"
+        placeholder="Tvoje meno"
+        autocomplete="off"
+        x-model="formData.name"
+        required
+      />
+
+      <label for="answer">Kam sa chystám</label>
+      <div id="answer" class="radio-group">
+        <div>
+          <input
+            id="obrad"
+            type="radio"
+            value="obrad"
+            x-model="formData.answer"
+          />
+          <label for="obrad">Prídem iba na obrad💍</label>
+        </div>
+        <div>
+          <input
+            id="obed"
+            type="radio"
+            value="obed"
+            x-model="formData.answer"
+          />
+          <label for="obed">Prídem aj na obed💍🍔</label>
+        </div>
+        <div>
+          <input id="nie" type="radio" value="nie" x-model="formData.answer" />
+          <label for="nie">Nemôžem sa dostaviť😢</label>
+        </div>
+      </div>
+
+      <label for="count">Počet hostí (vrátane teba)</label>
+      <input
+        id="count"
+        type="text"
+        placeholder="Koľko vás príde?"
+        x-model="formData.count"
+      />
+
+      <label for="guests">Mená ďalších hostí</label>
+      <input
+        id="guests"
+        type="text"
+        placeholder="Janko, Babuľa..."
+        x-model="formData.guests"
+      />
+
+      <label for="comment">Poznámka</label>
+      <textarea
+        id="comment"
+        name="comment"
+        placeholder="napr. potravinové alergie"
+        cols="30"
+        rows="8"
+        x-model="formData.comment"
+      ></textarea>
+      <button
+        type="submit"
+        :disabled="isLoading"
+        x-text="isLoading ? 'Odosielam...' : 'Odoslať'"
+      ></button>
+    </form>
+
+    <script>
+      //pockethost: https://rsvp.pockethost.io/api/collections/rsvp/records
+      //linode http!: http://143.42.58.68/api/collections/rsvp/record
+      console.log(
+        "%cVyplň formulár a nečmuchaj tu!😁😘",
+        "color: teal; font-family:monospace; font-size: 20px"
+      );
+
+      const jsConfetti = new JSConfetti();
+
+      function rsvpForm() {
+        return {
+          formData: {
+            name: "",
+            answer: "obed",
+            count: "",
+            guests: "",
+            comment: "",
+          },
+          isLoading: false,
+          async submitForm() {
+            this.isLoading = true;
+            try {
+              fetch(`https://wedd-rsvp.fly.dev/api/collections/rsvp/records`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(this.formData),
+              })
+                .then((res) => {
+                  if (!res.ok) {
+                    Swal.fire("😧...skús znovu");
+                    this.isLoading = false;
+                    this.resetForm();
+                    throw new Error(res.status);
+                  }
+                  return res.json();
+                })
+                .then((data) => {
+                  if (data.message) {
+                    Swal.fire(data.message);
+                  } else {
+                    jsConfetti.addConfetti();
+                    Swal.fire({
+                      text: "Ďakujeme!",
+                      background: "#f5f5f5",
+                      position: "bottom-end",
+                      timer: 2000,
+                      showConfirmButton: false,
+                      toast: true,
+                    });
+                  }
+                  this.isLoading = false;
+                  this.resetForm();
+                });
+            } catch (error) {
+              console.log(error);
+            }
+          },
+          resetForm() {
+            this.formData.name = "";
+            this.formData.answer = "obed";
+            this.formData.count = "";
+            this.formData.guests = "";
+            this.formData.comment = "";
+          },
+        };
+      }
+    </script>
+  </body>
+</html>

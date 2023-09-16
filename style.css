@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap");
+
+:root {
+  --dark-clr: #1a1a1a;
+  --light-clr: #f5f5f5;
+  --accent-clr: #f87ed8;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: var(--dark-clr);
+  font-family: "Oswald", sans-serif;
+  line-height: 1.5;
+  text-align: center;
+  font-weight: bold;
+}
+
+.title {
+  font-size: calc(5rem + 0.390625vw);
+  font-weight: bold;
+  color: var(--light-clr);
+  margin-bottom: 3rem;
+}
+
+.info {
+  font-size: calc(3rem + 0.390625vw);
+  font-weight: bold;
+  color: var(--light-clr);
+  margin-bottom: 3rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+}
+
+form > *:not(label) {
+  letter-spacing: 0.2rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--light-clr);
+  background: var(--light-clr);
+  border-radius: 0;
+}
+
+form > *:not(label):focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-clr);
+}
+
+form > label {
+  color: var(--light-clr);
+  font-size: 1.2rem;
+  text-align: left;
+  margin-bottom: 0.5rem;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.radio-group > div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.radio-group > div:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+input[type="radio"] {
+  appearance: none;
+  background-color: var(--light-clr);
+  color: var(--dark-clr);
+  width: 1rem;
+  height: 1rem;
+  border: 0.15em solid var(--dark-clr);
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--dark-clr);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 0.2s transform ease-in-out;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+form button {
+  -webkit-appearance: none;
+  color: var(--dark-clr);
+  cursor: pointer;
+}
+
+form button:hover {
+  filter: brightness(90%);
+}
+
+.swal2-popup {
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: sans-serif;
+}
