@@ -51,6 +51,7 @@
           <h1>Login</h1>
           <form @submit.prevent="login">
             <input
+              name="notAsearch"
               type="text"
               autocomplete="off"
               placeholder="Username"
@@ -58,6 +59,7 @@
               required
             />
             <input
+              name="alsoNotAsearch"
               type="password"
               autocomplete="off"
               placeholder="Password"
