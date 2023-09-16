@@ -98,7 +98,7 @@ form > *:not(label) {
   border-radius: 0;
 }
 
-form > *:not(label):focus {
+form > *:focus {
   outline: none;
   box-shadow: 0 0 0 2px var(--accent-clr);
 }
