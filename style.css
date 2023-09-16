@@ -98,6 +98,7 @@ form > *:not(label) {
 form input:focus,
 form textarea:focus {
   outline: none;
+  -webkit-box-shadow: 0 0 0 2px var(--accent-clr);
   box-shadow: 0 0 0 2px var(--accent-clr);
 }
 
