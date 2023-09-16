@@ -38,9 +38,10 @@
     <div class="form-container">
       <h1 class="form-title">RSVP</h1>
       <form x-data="rsvpForm()" @submit.prevent="submitForm">
-        <label for="qqq">Meno</label>
+        <label for="notAsearch">Meno</label>
         <input
-          id="qqq"
+          id="notAsearch"
+          name="notAsearch"
           type="text"
           placeholder="Tvoje meno"
           autocomplete="off"
