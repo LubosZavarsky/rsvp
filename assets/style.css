@@ -1,11 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500&family=Qwitcher+Grypen&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Open+Sans:wght@300;400;500&family=Qwitcher+Grypen&display=swap");
 
-@import url("https://fonts.googleapis.com/css2?family=Qwitcher+Grypen&display=swap");
+@font-face {
+  font-family: "Emeralde";
+  src: url("./fonts/emeralde_chamerions_script-webfont.woff") format("woff"),
+    url("./fonts/Emeralde_Chamerions_Script.otf") format("opentype");
+}
 
 :root {
+  --light-clr: #fafafa;
   --dark-clr: #1a1a1a;
-  --light-clr: #f5f5f5;
-  --accent-clr: #f87ed8;
 }
 
 *,
@@ -31,58 +35,82 @@ video {
 body {
   min-height: 100vh;
   padding: 1rem;
-  background: var(--dark-clr);
-  font-family: "Oswald", sans-serif;
+  background: var(--light-clr);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.2rem;
   line-height: 1.5;
   text-align: center;
 }
 
-.title {
-  font-size: calc(5rem + 0.390625vw);
-  font-weight: bold;
-  color: var(--light-clr);
+section {
+  display: grid;
+  min-height: 100vh;
+  max-width: 1130px;
+  margin: 0 auto;
 }
 
-.sub-title {
-  font-family: "Qwitcher Grypen", cursive;
-  font-size: calc(6rem + 0.390625vw);
-  color: var(--light-clr);
+.text-right {
+  margin-top: auto;
+  text-align: right;
+}
+
+.title {
+  font-size: calc(4rem + 3vw);
+  color: var(--dark-clr);
+  font-family: "Emeralde", cursive;
+  margin-block: 5rem;
+}
+
+.title span {
+  position: relative;
+  top: 2rem;
+  left: 0.25rem;
+  display: inline-block;
+  transform: rotate(180deg);
 }
 
 .info {
-  font-size: calc(1.5rem + 0.390625vw);
-  font-weight: bold;
-  color: var(--light-clr);
+  color: var(--dark-clr);
   margin-top: 3rem;
   margin-bottom: 5rem;
 }
 
-.info p:not(:last-child) {
+.info p {
   margin-bottom: 2rem;
 }
 
-.info a {
-  color: inherit;
+.info p a {
+  color: var(--dark-clr);
+}
+
+.info .names {
+  font-size: calc(1rem + 0.390625vw);
+  font-family: "Newsreader", serif;
+  font-weight: 300;
+  letter-spacing: 0.6rem;
 }
 
 .form-container {
+  width: 100%;
+  margin: 2rem auto;
+  /* margin-left: auto;
+  margin-block: 2rem; */
   max-width: 30rem;
-  margin: 0 auto;
-  border: 1px solid var(--light-clr);
+  border: 1px solid var(--dark-clr);
   padding: 1.5rem;
 }
 
 .form-title {
+  font-family: "Newsreader", serif;
   font-size: 3rem;
-  font-weight: bold;
-  color: var(--light-clr);
+  color: var(--dark-clr);
   margin-bottom: 2rem;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  font-weight: bold;
   width: 100%;
 }
 
@@ -90,22 +118,21 @@ form > *:not(label) {
   letter-spacing: 0.2rem;
   margin-bottom: 1rem;
   padding: 0.5rem;
-  border: 1px solid var(--light-clr);
+  border: 1px solid var(--dark-clr);
   background: var(--light-clr);
   border-radius: 0;
 }
 
-form input:focus,
+form input[type="text"]:focus,
 form textarea:focus {
   outline: none;
   -webkit-appearance: none;
-  -webkit-box-shadow: 0 0 0 2px var(--accent-clr);
-  box-shadow: 0 0 0 2px var(--accent-clr);
+  -webkit-box-shadow: 0 0 0 0.5px var(--dark-clr);
+  box-shadow: 0 0 0 0.5px var(--dark-clr);
 }
 
 form > label {
-  color: var(--light-clr);
-  font-size: 1.2rem;
+  color: var(--dark-clr);
   text-align: left;
   margin-bottom: 0.5rem;
 }

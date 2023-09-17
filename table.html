@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>guestlist</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
@@ -210,6 +210,7 @@
                   this.token = data.token;
                   localStorage.setItem("username", data.record.username);
                   this.user = data.record.username;
+                  this.resetForm();
                 });
             } catch (error) {
               console.log(error);
