@@ -98,11 +98,13 @@ section {
   margin: 2rem auto;
   border: 1px solid var(--dark-clr);
   padding: 1.5rem;
+  text-align: left;
 }
 
 .form-title {
   font-family: "Newsreader", serif;
   font-size: 3rem;
+  text-align: center;
   color: var(--dark-clr);
   margin-bottom: 2rem;
 }
@@ -119,7 +121,6 @@ form > *:not(label) {
   padding: 0.5rem;
   border: 1px solid var(--dark-clr);
   background: var(--light-clr);
-  border-radius: 0;
 }
 
 form input[type="text"]:focus,
@@ -160,6 +161,7 @@ input[type="radio"] {
   border: 0.15em solid var(--dark-clr);
   border-radius: 50%;
   display: inline-flex;
+  flex-shrink: 0;
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -192,7 +194,6 @@ form button:hover {
 
 .ps {
   border: none;
-  text-align: left;
 }
 
 .swal2-popup {
