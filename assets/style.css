@@ -121,6 +121,7 @@ form > *:not(label) {
   padding: 0.5rem;
   border: 1px solid var(--dark-clr);
   background: var(--light-clr);
+  border-radius: 0;
 }
 
 form input[type="text"]:focus,
